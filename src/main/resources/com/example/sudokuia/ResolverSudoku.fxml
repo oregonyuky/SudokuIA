@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.ResolverSudokuController"
+            prefWidth="1500"
+            prefHeight="900">
+
+    <!-- ===================================================== -->
+    <!-- TOPO -->
+    <!-- ===================================================== -->
+
+    <top>
+        <VBox spacing="15">
+
+            <padding>
+                <Insets top="20" right="30" bottom="15" left="30"/>
+            </padding>
+
+            <Label text="▦  Resolvedor de Sudoku">
+                <font>
+                    <Font size="20"/>
+                </font>
+            </Label>
+
+            <HBox alignment="CENTER" spacing="30">
+
+                <!-- ETAPA 1 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="✓">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Escolher / Inserir Sudoku">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90"/>
+
+                <!-- ETAPA 2 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="✓">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Configurar Algoritmo">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90"/>
+
+                <!-- ETAPA 3 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="3">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Resolver">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90"/>
+
+                <!-- ETAPA 4 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="4">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Resultados">
+                        <font>
+                            <Font size="17"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+            </HBox>
+
+            <Separator/>
+
+        </VBox>
+    </top>
+
+    <!-- ===================================================== -->
+    <!-- CENTRO -->
+    <!-- ===================================================== -->
+
+    <center>
+
+        <HBox spacing="20">
+
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- ================================================= -->
+            <!-- ESQUERDA - TABULEIRO -->
+            <!-- ================================================= -->
+
+            <VBox spacing="15"
+                  prefWidth="390">
+
+                <Label text="Tabuleiro">
+                    <font>
+                        <Font size="23"/>
+                    </font>
+                </Label>
+
+                <GridPane fx:id="gridSudoku"
+                          alignment="CENTER"
+                          hgap="1"
+                          vgap="1">
+
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                    </columnConstraints>
+
+                    <rowConstraints>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                    </rowConstraints>
+
+                </GridPane>
+
+                <Separator/>
+
+                <Label text="Algoritmo em execução">
+                    <font>
+                        <Font size="17"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="15"
+                          vgap="10">
+
+                    <Label text="Algoritmo:"/>
+
+                    <Label fx:id="lblAlgoritmo"
+                           text="DFS com Backtracking"
+                           GridPane.columnIndex="1"/>
+
+                    <Label text="Estado:"
+                           GridPane.rowIndex="1"/>
+
+                    <Label fx:id="lblEstado"
+                           text="Aguardando"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+
+                    <Label text="Profundidade:"
+                           GridPane.rowIndex="2"/>
+
+                    <Label fx:id="lblProfundidade"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+
+                </GridPane>
+
+                <Separator/>
+
+                <Label text="Métricas">
+                    <font>
+                        <Font size="17"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="20"
+                          vgap="10">
+
+                    <Label text="Tempo:"/>
+
+                    <Label fx:id="lblTempo"
+                           text="00:00:00.000"
+                           GridPane.columnIndex="1"/>
+
+                    <Label text="Nós explorados:"
+                           GridPane.rowIndex="1"/>
+
+                    <Label fx:id="lblNos"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+
+                    <Label text="Passos:"
+                           GridPane.rowIndex="2"/>
+
+                    <Label fx:id="lblPassos"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+
+                    <Label text="Backtracks:"
+                           GridPane.rowIndex="3"/>
+
+                    <Label fx:id="lblBacktracks"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="3"/>
+
+                </GridPane>
+
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- CENTRO - EXECUÇÃO E ÁRVORE -->
+            <!-- ================================================= -->
+
+            <VBox spacing="15"
+                  prefWidth="650">
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="12">
+
+                    <Button fx:id="btnIniciar"
+                            text="▶  Iniciar"
+                            prefWidth="110"
+                            prefHeight="40"
+                            onAction="#iniciar"/>
+
+                    <Button fx:id="btnPausar"
+                            text="Ⅱ  Pausar"
+                            prefWidth="110"
+                            prefHeight="40"
+                            disable="true"
+                            onAction="#pausar"/>
+
+                    <Button fx:id="btnPasso"
+                            text="▶|  Próximo Passo"
+                            prefWidth="150"
+                            prefHeight="40"
+                            disable="true"
+                            onAction="#proximoPasso"/>
+
+                    <Button fx:id="btnParar"
+                            text="■  Parar"
+                            prefWidth="100"
+                            prefHeight="40"
+                            disable="true"
+                            onAction="#parar"/>
+
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="15">
+
+                    <Label text="Velocidade:"/>
+
+                    <Slider fx:id="sliderVelocidade"
+                            min="0.1"
+                            max="3.0"
+                            value="1.0"
+                            prefWidth="330"
+                            showTickLabels="true"
+                            showTickMarks="true"
+                            majorTickUnit="0.5"/>
+
+                    <Label fx:id="lblVelocidade"
+                           text="1.0x"/>
+
+                </HBox>
+
+                <Separator/>
+
+                <Label text="Árvore de Busca">
+                    <font>
+                        <Font size="21"/>
+                    </font>
+                </Label>
+
+                <ScrollPane fx:id="scrollArvore"
+                            fitToWidth="true"
+                            fitToHeight="true"
+                            prefHeight="420">
+
+                    <content>
+                        <Pane fx:id="paneArvore"
+                              prefWidth="600"
+                              prefHeight="400"/>
+                    </content>
+
+                </ScrollPane>
+
+                <HBox spacing="15">
+
+                    <Button text="Centralizar árvore"
+                            onAction="#centralizarArvore"/>
+
+                    <Button text="Limpar visualização"
+                            onAction="#limparArvore"/>
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <Label fx:id="lblNosArvore"
+                           text="Nós exibidos: 0"/>
+
+                </HBox>
+
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- DIREITA - ESTADO ATUAL + PILHA + LOG -->
+            <!-- ================================================= -->
+
+            <VBox spacing="15"
+                  prefWidth="400">
+
+                <!-- CÉLULA ATUAL -->
+
+                <Label text="Célula atual">
+                    <font>
+                        <Font size="21"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="15"
+                          vgap="10">
+
+                    <Label text="Linha:"/>
+
+                    <Label fx:id="lblLinhaAtual"
+                           text="-"
+                           GridPane.columnIndex="1"/>
+
+                    <Label text="Coluna:"
+                           GridPane.rowIndex="1"/>
+
+                    <Label fx:id="lblColunaAtual"
+                           text="-"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+
+                    <Label text="Valores válidos:"
+                           GridPane.rowIndex="2"/>
+
+                    <Label fx:id="lblValoresValidos"
+                           text="{}"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+
+                    <Label text="Tentando:"
+                           GridPane.rowIndex="3"/>
+
+                    <Label fx:id="lblTentando"
+                           text="-"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="3"/>
+
+                    <Label text="Ação:"
+                           GridPane.rowIndex="4"/>
+
+                    <Label fx:id="lblAcao"
+                           text="Aguardando"
+                           wrapText="true"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="4"/>
+
+                </GridPane>
+
+                <Separator/>
+
+                <!-- PILHA -->
+
+                <Label text="Pilha de estados">
+                    <font>
+                        <Font size="19"/>
+                    </font>
+                </Label>
+
+                <ListView fx:id="listPilha"
+                          prefHeight="180"/>
+
+                <Separator/>
+
+                <!-- LOG -->
+
+                <Label text="Log de execução">
+                    <font>
+                        <Font size="19"/>
+                    </font>
+                </Label>
+
+                <TextArea fx:id="txtLog"
+                          editable="false"
+                          wrapText="false"
+                          prefHeight="260"/>
+
+            </VBox>
+
+        </HBox>
+
+    </center>
+
+    <!-- ===================================================== -->
+    <!-- RODAPÉ -->
+    <!-- ===================================================== -->
+
+    <bottom>
+
+        <VBox>
+
+            <Separator/>
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="15">
+
+                <padding>
+                    <Insets top="15" right="25" bottom="15" left="25"/>
+                </padding>
+
+                <Button text="↪  Sair"
+                        prefWidth="120"
+                        prefHeight="45"
+                        onAction="#sair"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="←  Voltar"
+                        prefWidth="130"
+                        prefHeight="45"
+                        onAction="#voltar"/>
+
+                <Button fx:id="btnResultados"
+                        text="Resultados  →"
+                        prefWidth="150"
+                        prefHeight="45"
+                        disable="true"
+                        onAction="#resultados"/>
+
+            </HBox>
+
+        </VBox>
+
+    </bottom>
+
+</BorderPane>

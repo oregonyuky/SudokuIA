@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="900" prefWidth="1500" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EscolherSudokuController"   stylesheets="@/css/sudoku.css">
+
+    <!-- ===================================================== -->
+    <!-- TOPO -->
+    <!-- ===================================================== -->
+
+    <top>
+        <VBox spacing="15">
+
+            <padding>
+                <Insets bottom="15" left="30" right="30" top="20" />
+            </padding>
+
+            <Label text="▦  Resolvedor de Sudoku">
+                <font>
+                    <Font size="20" />
+                </font>
+            </Label>
+
+            <HBox alignment="CENTER" spacing="30">
+
+                <!-- ETAPA 1 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="1">
+                        <font>
+                            <Font size="18" />
+                        </font>
+                    </Label>
+
+                    <Label text="Escolher / Inserir Sudoku">
+                        <font>
+                            <Font size="18" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90" />
+
+                <!-- ETAPA 2 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="2">
+                        <font>
+                            <Font size="18" />
+                        </font>
+                    </Label>
+
+                    <Label text="Configurar Algoritmo">
+                        <font>
+                            <Font size="17" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90" />
+
+                <!-- ETAPA 3 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="3">
+                        <font>
+                            <Font size="18" />
+                        </font>
+                    </Label>
+
+                    <Label text="Resolver">
+                        <font>
+                            <Font size="17" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90" />
+
+                <!-- ETAPA 4 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="4">
+                        <font>
+                            <Font size="18" />
+                        </font>
+                    </Label>
+
+                    <Label text="Resultados">
+                        <font>
+                            <Font size="17" />
+                        </font>
+                    </Label>
+                </HBox>
+
+            </HBox>
+
+            <Separator />
+
+        </VBox>
+    </top>
+
+    <!-- ===================================================== -->
+    <!-- CONTEÚDO CENTRAL -->
+    <!-- ===================================================== -->
+
+    <center>
+
+        <HBox spacing="20">
+
+            <padding>
+                <Insets bottom="10" left="25" right="25" top="10" />
+            </padding>
+
+            <!-- ================================================= -->
+            <!-- COLUNA ESQUERDA -->
+            <!-- ================================================= -->
+
+            <VBox prefWidth="380" spacing="12">
+
+                <Label text="Escolha um Sudoku">
+                    <font>
+                        <Font size="25" />
+                    </font>
+                </Label>
+
+                <Label text="Opções">
+                    <font>
+                        <Font size="17" />
+                    </font>
+                </Label>
+
+
+                <!-- INSERIR MANUALMENTE -->
+
+                <Button fx:id="btnManual" onAction="#inserirManual" prefHeight="62" prefWidth="360">
+
+                    <graphic>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+
+                            <Label text="✎">
+                                <font>
+                                    <Font size="28" />
+                                </font>
+                            </Label>
+
+                            <VBox>
+                                <Label text="Inserir manualmente">
+                                    <font>
+                                        <Font size="17" />
+                                    </font>
+                                </Label>
+
+                                <Label text="Digite os valores no tabuleiro" />
+                            </VBox>
+
+                        </HBox>
+
+                    </graphic>
+
+                </Button>
+
+
+                <!-- CARREGAR -->
+
+                <Button fx:id="btnCarregar" onAction="#carregarArquivo" prefHeight="62" prefWidth="360">
+
+                    <graphic>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+
+                            <Label text="▱">
+                                <font>
+                                    <Font size="28" />
+                                </font>
+                            </Label>
+
+                            <VBox>
+
+                                <Label text="Carregar de arquivo">
+                                    <font>
+                                        <Font size="17" />
+                                    </font>
+                                </Label>
+
+                                <Label text="Importe um arquivo (.txt, .sdk)" />
+
+                            </VBox>
+
+                        </HBox>
+
+                    </graphic>
+
+                </Button>
+
+
+                <!-- ALEATÓRIO -->
+
+                <Button fx:id="btnAleatorio" onAction="#gerarAleatorio" prefHeight="62" prefWidth="360">
+
+                    <graphic>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+
+                            <Label text="↻">
+                                <font>
+                                    <Font size="30" />
+                                </font>
+                            </Label>
+
+                            <VBox>
+
+                                <Label text="Gerar aleatório">
+                                    <font>
+                                        <Font size="17" />
+                                    </font>
+                                </Label>
+
+                                <Label text="Gera um Sudoku válido" />
+
+                            </VBox>
+
+                        </HBox>
+
+                    </graphic>
+
+                </Button>
+
+
+                <Label prefWidth="350" text="ⓘ  Selecione um exemplo, insira manualmente ou carregue um arquivo para continuar." wrapText="true" />
+
+            </VBox>
+
+
+            <!-- ================================================= -->
+            <!-- COLUNA CENTRAL -->
+            <!-- ================================================= -->
+
+            <VBox prefWidth="620" spacing="18">
+
+                <Label text="Tabuleiro">
+                    <font>
+                        <Font size="25" />
+                    </font>
+                </Label>
+
+
+                <!-- TABULEIRO -->
+
+                <GridPane fx:id="gridSudoku" alignment="CENTER" hgap="1" vgap="1">
+
+                    <!-- COLUNAS -->
+
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="60" />
+                    </columnConstraints>
+
+                    <!-- LINHAS -->
+
+                    <rowConstraints>
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="60" />
+                    </rowConstraints>
+
+
+                    <!-- LINHA 0 -->
+                    <TextField fx:id="c00" styleClass="sudoku-cell" alignment="CENTER" text="5" />
+                    <TextField fx:id="c01" styleClass="sudoku-cell" alignment="CENTER" text="3" GridPane.columnIndex="1" />
+                    <TextField fx:id="c02" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" />
+                    <TextField fx:id="c03" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" />
+                    <TextField fx:id="c04" styleClass="sudoku-cell" alignment="CENTER" text="7" GridPane.columnIndex="4" />
+                    <TextField fx:id="c05" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" />
+                    <TextField fx:id="c06" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" />
+                    <TextField fx:id="c07" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" />
+                    <TextField fx:id="c08" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" />
+
+                    <!-- LINHA 1 -->
+                    <TextField fx:id="c10" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.rowIndex="1" />
+                    <TextField fx:id="c11" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="c12" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <TextField fx:id="c13" styleClass="sudoku-cell" alignment="CENTER" text="1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    <TextField fx:id="c14" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                    <TextField fx:id="c15" styleClass="sudoku-cell" alignment="CENTER" text="5" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                    <TextField fx:id="c16" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                    <TextField fx:id="c17" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                    <TextField fx:id="c18" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+
+                    <!-- LINHA 2 -->
+                    <TextField fx:id="c20" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="2" />
+                    <TextField fx:id="c21" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="c22" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <TextField fx:id="c23" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    <TextField fx:id="c24" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                    <TextField fx:id="c25" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                    <TextField fx:id="c26" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                    <TextField fx:id="c27" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                    <TextField fx:id="c28" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+
+                    <!-- LINHA 3 -->
+                    <TextField fx:id="c30" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.rowIndex="3" />
+                    <TextField fx:id="c31" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="c32" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                    <TextField fx:id="c33" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <TextField fx:id="c34" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                    <TextField fx:id="c35" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                    <TextField fx:id="c36" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                    <TextField fx:id="c37" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+                    <TextField fx:id="c38" styleClass="sudoku-cell" alignment="CENTER" text="3" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+
+                    <!-- LINHA 4 -->
+                    <TextField fx:id="c40" styleClass="sudoku-cell" alignment="CENTER" text="4" GridPane.rowIndex="4" />
+                    <TextField fx:id="c41" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <TextField fx:id="c42" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                    <TextField fx:id="c43" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                    <TextField fx:id="c44" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                    <TextField fx:id="c45" styleClass="sudoku-cell" alignment="CENTER" text="3" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                    <TextField fx:id="c46" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                    <TextField fx:id="c47" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+                    <TextField fx:id="c48" styleClass="sudoku-cell" alignment="CENTER" text="1" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+
+                    <!-- LINHA 5 -->
+                    <TextField fx:id="c50" styleClass="sudoku-cell" alignment="CENTER" text="7" GridPane.rowIndex="5" />
+                    <TextField fx:id="c51" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <TextField fx:id="c52" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                    <TextField fx:id="c53" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                    <TextField fx:id="c54" styleClass="sudoku-cell" alignment="CENTER" text="2" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                    <TextField fx:id="c55" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                    <TextField fx:id="c56" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                    <TextField fx:id="c57" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+                    <TextField fx:id="c58" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+
+                    <!-- LINHA 6 -->
+                    <TextField fx:id="c60" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="6" />
+                    <TextField fx:id="c61" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <TextField fx:id="c62" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                    <TextField fx:id="c63" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                    <TextField fx:id="c64" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                    <TextField fx:id="c65" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                    <TextField fx:id="c66" styleClass="sudoku-cell" alignment="CENTER" text="2" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+                    <TextField fx:id="c67" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="7" GridPane.rowIndex="6" />
+                    <TextField fx:id="c68" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="6" />
+
+                    <!-- LINHA 7 -->
+                    <TextField fx:id="c70" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="7" />
+                    <TextField fx:id="c71" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    <TextField fx:id="c72" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                    <TextField fx:id="c73" styleClass="sudoku-cell" alignment="CENTER" text="4" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                    <TextField fx:id="c74" styleClass="sudoku-cell" alignment="CENTER" text="1" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                    <TextField fx:id="c75" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                    <TextField fx:id="c76" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+                    <TextField fx:id="c77" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+                    <TextField fx:id="c78" styleClass="sudoku-cell" alignment="CENTER" text="5" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+
+                    <!-- LINHA 8 -->
+                    <TextField fx:id="c80" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="8" />
+                    <TextField fx:id="c81" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                    <TextField fx:id="c82" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                    <TextField fx:id="c83" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                    <TextField fx:id="c84" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                    <TextField fx:id="c85" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                    <TextField fx:id="c86" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+                    <TextField fx:id="c87" styleClass="sudoku-cell" alignment="CENTER" text="7" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+                    <TextField fx:id="c88" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="8" GridPane.rowIndex="8" />
+
+                </GridPane>
+
+
+                <!-- BOTÕES DO TABULEIRO -->
+
+                <HBox alignment="CENTER" spacing="15">
+
+                    <Button onAction="#limparTabuleiro" prefHeight="42" prefWidth="150" text="⌫  Limpar" />
+
+                    <Button onAction="#verificarTabuleiro" prefHeight="42" prefWidth="150" text="✓  Verificar" />
+
+                    <Button onAction="#preencherExemplo" prefHeight="42" prefWidth="190" text="▦  Preencher Exemplo" />
+
+                </HBox>
+
+            </VBox>
+
+
+            <!-- ================================================= -->
+            <!-- COLUNA DIREITA -->
+            <!-- ================================================= -->
+
+            <VBox prefWidth="400" spacing="25">
+
+                <!-- INFORMAÇÕES -->
+
+                <VBox spacing="13">
+
+                    <Label text="Informações do Sudoku">
+                        <font>
+                            <Font size="22" />
+                        </font>
+                    </Label>
+
+                    <GridPane hgap="30" vgap="14">
+
+                        <Label text="Nome:" />
+
+                        <Label fx:id="lblNome" text="Fácil" GridPane.columnIndex="1" />
+
+                        <Label text="Dificuldade:" GridPane.rowIndex="1" />
+
+                        <Label fx:id="lblDificuldade" text="Fácil" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Células preenchidas:" GridPane.rowIndex="2" />
+
+                        <Label fx:id="lblPreenchidas" text="30 / 81" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+
+                    </GridPane>
+
+                    <Label text="Descrição:" />
+
+                    <Label fx:id="lblDescricao" prefWidth="360" text="Exemplo clássico de Sudoku com nível de dificuldade fácil." wrapText="true" />
+
+                </VBox>
+
+                <Separator />
+
+
+                <!-- REGRAS -->
+
+                <VBox spacing="15">
+
+                    <Label text="Regras do Sudoku">
+                        <font>
+                            <Font size="21" />
+                        </font>
+                    </Label>
+
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+
+                        <Label text="①">
+                            <font>
+                                <Font size="30" />
+                            </font>
+                        </Label>
+
+                        <Label prefWidth="310" text="Cada linha deve conter os números de 1 a 9 sem repetição." wrapText="true" />
+
+                    </HBox>
+
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+
+                        <Label text="②">
+                            <font>
+                                <Font size="30" />
+                            </font>
+                        </Label>
+
+                        <Label prefWidth="310" text="Cada coluna deve conter os números de 1 a 9 sem repetição." wrapText="true" />
+
+                    </HBox>
+
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+
+                        <Label text="③">
+                            <font>
+                                <Font size="30" />
+                            </font>
+                        </Label>
+
+                        <Label prefWidth="310" text="Cada bloco 3x3 deve conter os números de 1 a 9 sem repetição." wrapText="true" />
+
+                    </HBox>
+
+                </VBox>
+
+                <Separator />
+
+
+                <!-- DICA -->
+
+                <VBox spacing="10">
+
+                    <Label text="💡 Dica">
+                        <font>
+                            <Font size="20" />
+                        </font>
+                    </Label>
+
+                    <Label prefWidth="360" text="Você pode modificar os valores do tabuleiro antes de continuar. Após escolher o Sudoku, clique em “Próximo” para configurar o algoritmo de resolução." wrapText="true" />
+
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+
+    </center>
+
+
+    <!-- ===================================================== -->
+    <!-- RODAPÉ -->
+    <!-- ===================================================== -->
+
+    <bottom>
+
+        <VBox>
+
+            <Separator />
+
+            <HBox alignment="CENTER_LEFT" spacing="15">
+
+                <padding>
+                    <Insets bottom="15" left="25" right="25" top="15" />
+                </padding>
+
+                <Button onAction="#sair" prefHeight="45" prefWidth="120" text="↪  Sair" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button disable="true" prefHeight="45" prefWidth="130" text="‹  Voltar" />
+
+                <Button fx:id="btnProximo" onAction="#proximo" prefHeight="45" prefWidth="140" text="Próximo  ›" />
+
+            </HBox>
+
+        </VBox>
+
+    </bottom>
+
+</BorderPane>

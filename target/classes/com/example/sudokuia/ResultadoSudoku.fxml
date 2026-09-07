@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.ResultadoSudokuController"
+            prefWidth="1500"
+            prefHeight="900">
+
+    <!-- ===================================================== -->
+    <!-- TOPO -->
+    <!-- ===================================================== -->
+
+    <top>
+        <VBox spacing="15">
+
+            <padding>
+                <Insets top="20" right="30" bottom="15" left="30"/>
+            </padding>
+
+            <Label text="▦  Resolvedor de Sudoku">
+                <font>
+                    <Font size="20"/>
+                </font>
+            </Label>
+
+            <HBox alignment="CENTER" spacing="30">
+
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="✓">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Escolher / Inserir Sudoku">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90"/>
+
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="✓">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Configurar Algoritmo">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90"/>
+
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="✓">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Resolver">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+                <Separator prefWidth="90"/>
+
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="4">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+
+                    <Label text="Resultados">
+                        <font>
+                            <Font size="18"/>
+                        </font>
+                    </Label>
+                </HBox>
+
+            </HBox>
+
+            <Separator/>
+
+        </VBox>
+    </top>
+
+    <!-- ===================================================== -->
+    <!-- CENTRO -->
+    <!-- ===================================================== -->
+
+    <center>
+
+        <HBox spacing="20">
+
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- ================================================= -->
+            <!-- ESQUERDA - TABULEIRO FINAL -->
+            <!-- ================================================= -->
+
+            <VBox spacing="15"
+                  prefWidth="390">
+
+                <Label text="Sudoku Resolvido">
+                    <font>
+                        <Font size="23"/>
+                    </font>
+                </Label>
+
+                <GridPane fx:id="gridSudoku"
+                          alignment="CENTER"
+                          hgap="1"
+                          vgap="1">
+
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                        <ColumnConstraints prefWidth="40"/>
+                    </columnConstraints>
+
+                    <rowConstraints>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                        <RowConstraints prefHeight="40"/>
+                    </rowConstraints>
+
+                </GridPane>
+
+                <Separator/>
+
+                <Label text="Resultado">
+                    <font>
+                        <Font size="18"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="15"
+                          vgap="10">
+
+                    <Label text="Status:"/>
+
+                    <Label fx:id="lblStatus"
+                           text="Solução encontrada"
+                           GridPane.columnIndex="1"/>
+
+                    <Label text="Algoritmo:"
+                           GridPane.rowIndex="1"/>
+
+                    <Label fx:id="lblAlgoritmo"
+                           text="DFS com Backtracking"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+
+                    <Label text="Heurística:"
+                           GridPane.rowIndex="2"/>
+
+                    <Label fx:id="lblHeuristica"
+                           text="Nenhuma"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+
+                    <Label text="Dificuldade:"
+                           GridPane.rowIndex="3"/>
+
+                    <Label fx:id="lblDificuldade"
+                           text="Fácil"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="3"/>
+
+                </GridPane>
+
+                <Separator/>
+
+                <Label text="Resumo">
+                    <font>
+                        <Font size="18"/>
+                    </font>
+                </Label>
+
+                <Label fx:id="lblResumo"
+                       text="O Sudoku foi resolvido com sucesso."
+                       wrapText="true"
+                       prefWidth="340"/>
+
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- CENTRO - MÉTRICAS -->
+            <!-- ================================================= -->
+
+            <VBox spacing="15"
+                  prefWidth="500">
+
+                <Label text="Métricas da Execução">
+                    <font>
+                        <Font size="23"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="30"
+                          vgap="18">
+
+                    <Label text="Tempo de execução:">
+                        <font>
+                            <Font size="16"/>
+                        </font>
+                    </Label>
+
+                    <Label fx:id="lblTempo"
+                           text="0.000 ms"
+                           GridPane.columnIndex="1"/>
+
+                    <Label text="Estados explorados:"
+                           GridPane.rowIndex="1"/>
+
+                    <Label fx:id="lblEstadosExplorados"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+
+                    <Label text="Passos:"
+                           GridPane.rowIndex="2"/>
+
+                    <Label fx:id="lblPassos"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+
+                    <Label text="Backtracks:"
+                           GridPane.rowIndex="3"/>
+
+                    <Label fx:id="lblBacktracks"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="3"/>
+
+                    <Label text="Profundidade máxima:"
+                           GridPane.rowIndex="4"/>
+
+                    <Label fx:id="lblProfundidade"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="4"/>
+
+                    <Label text="Células preenchidas pelo algoritmo:"
+                           GridPane.rowIndex="5"/>
+
+                    <Label fx:id="lblCelulasPreenchidas"
+                           text="0"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="5"/>
+
+                </GridPane>
+
+                <Separator/>
+
+                <Label text="Comparação">
+                    <font>
+                        <Font size="20"/>
+                    </font>
+                </Label>
+
+                <TableView fx:id="tableComparacao"
+                           prefHeight="250">
+
+                    <columns>
+
+                        <TableColumn fx:id="colMetrica"
+                                     text="Métrica"
+                                     prefWidth="170"/>
+
+                        <TableColumn fx:id="colAlgoritmoAtual"
+                                     text="Algoritmo Atual"
+                                     prefWidth="150"/>
+
+                        <TableColumn fx:id="colOutroAlgoritmo"
+                                     text="Outro Algoritmo"
+                                     prefWidth="150"/>
+
+                    </columns>
+
+                </TableView>
+
+                <HBox spacing="15">
+
+                    <Button fx:id="btnComparar"
+                            text="Comparar Algoritmos"
+                            prefWidth="190"
+                            prefHeight="40"
+                            onAction="#compararAlgoritmos"/>
+
+                    <Button fx:id="btnExecutarOutro"
+                            text="Executar outro algoritmo"
+                            prefWidth="190"
+                            prefHeight="40"
+                            onAction="#executarOutroAlgoritmo"/>
+
+                </HBox>
+
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- DIREITA - GRÁFICO E ANÁLISE -->
+            <!-- ================================================= -->
+
+            <VBox spacing="15"
+                  prefWidth="500">
+
+                <Label text="Análise Comparativa">
+                    <font>
+                        <Font size="23"/>
+                    </font>
+                </Label>
+
+                <BarChart fx:id="graficoComparacao"
+                          prefHeight="340"
+                          animated="false"
+                          legendVisible="true">
+
+                    <xAxis>
+                        <CategoryAxis label="Algoritmos"/>
+                    </xAxis>
+
+                    <yAxis>
+                        <NumberAxis label="Valor"/>
+                    </yAxis>
+
+                </BarChart>
+
+                <Separator/>
+
+                <Label text="Análise">
+                    <font>
+                        <Font size="19"/>
+                    </font>
+                </Label>
+
+                <TextArea fx:id="txtAnalise"
+                          editable="false"
+                          wrapText="true"
+                          prefHeight="220"
+                          text="A análise comparativa será exibida aqui."/>
+
+                <HBox spacing="15">
+
+                    <Button text="Exportar Resultados"
+                            prefWidth="170"
+                            prefHeight="40"
+                            onAction="#exportarResultados"/>
+
+                    <Button text="Salvar Relatório"
+                            prefWidth="150"
+                            prefHeight="40"
+                            onAction="#salvarRelatorio"/>
+
+                </HBox>
+
+            </VBox>
+
+        </HBox>
+
+    </center>
+
+    <!-- ===================================================== -->
+    <!-- RODAPÉ -->
+    <!-- ===================================================== -->
+
+    <bottom>
+
+        <VBox>
+
+            <Separator/>
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="15">
+
+                <padding>
+                    <Insets top="15" right="25" bottom="15" left="25"/>
+                </padding>
+
+                <Button text="↪  Sair"
+                        prefWidth="120"
+                        prefHeight="45"
+                        onAction="#sair"/>
+
+                <Button text="↻  Resolver Novamente"
+                        prefWidth="180"
+                        prefHeight="45"
+                        onAction="#resolverNovamente"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="←  Voltar"
+                        prefWidth="130"
+                        prefHeight="45"
+                        onAction="#voltar"/>
+
+                <Button text="Novo Sudoku"
+                        prefWidth="150"
+                        prefHeight="45"
+                        onAction="#novoSudoku"/>
+
+            </HBox>
+
+        </VBox>
+
+    </bottom>
+
+</BorderPane>

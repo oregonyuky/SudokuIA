@@ -5,4 +5,6 @@ module com.example.sudokuia {
 
     opens com.example.sudokuia to javafx.fxml;
     exports com.example.sudokuia;
+
+    opens controller to javafx.fxml;
 }
