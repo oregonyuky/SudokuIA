@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="725.0" prefWidth="1500" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurarAlgoritmoController">
+<BorderPane prefHeight="725.0" prefWidth="1500" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurarAlgoritmoController">
 
     <!-- ===================================================== -->
     <!-- TOPO -->
@@ -462,16 +462,5 @@
         </VBox>
 
     </bottom>
-
-
-    <!-- ===================================================== -->
-    <!-- OBJETOS NÃO VISUAIS -->
-    <!-- ===================================================== -->
-
-    <fx:define>
-
-        <ToggleGroup fx:id="grupoBusca" />
-
-    </fx:define>
 
 </BorderPane>

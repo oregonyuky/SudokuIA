@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900" prefWidth="1500" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EscolherSudokuController"   stylesheets="@/css/sudoku.css">
+<BorderPane prefHeight="900" prefWidth="1500" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EscolherSudokuController">
 
     <!-- ===================================================== -->
     <!-- TOPO -->
@@ -114,7 +115,9 @@
 
     <center>
 
-        <HBox spacing="20">
+        <ScrollPane fitToHeight="false" fitToWidth="true" hbarPolicy="NEVER" pannable="false" vbarPolicy="AS_NEEDED">
+            <content>
+                <HBox spacing="20">
 
             <padding>
                 <Insets bottom="10" left="25" right="25" top="10" />
@@ -256,137 +259,139 @@
 
                 <!-- TABULEIRO -->
 
-                <GridPane fx:id="gridSudoku" alignment="CENTER" hgap="1" vgap="1">
+                <HBox alignment="CENTER" prefHeight="377.0" prefWidth="300.0">
+                    <GridPane fx:id="gridSudoku" alignment="CENTER" styleClass="sudoku-grid">
 
                     <!-- COLUNAS -->
 
                     <columnConstraints>
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
-                        <ColumnConstraints prefWidth="60" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
+                        <ColumnConstraints prefWidth="50" />
                     </columnConstraints>
 
                     <!-- LINHAS -->
 
                     <rowConstraints>
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
-                        <RowConstraints prefHeight="60" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
+                        <RowConstraints prefHeight="50" />
                     </rowConstraints>
 
 
                     <!-- LINHA 0 -->
-                    <TextField fx:id="c00" styleClass="sudoku-cell" alignment="CENTER" text="5" />
-                    <TextField fx:id="c01" styleClass="sudoku-cell" alignment="CENTER" text="3" GridPane.columnIndex="1" />
-                    <TextField fx:id="c02" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" />
-                    <TextField fx:id="c03" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" />
-                    <TextField fx:id="c04" styleClass="sudoku-cell" alignment="CENTER" text="7" GridPane.columnIndex="4" />
-                    <TextField fx:id="c05" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" />
-                    <TextField fx:id="c06" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" />
-                    <TextField fx:id="c07" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" />
-                    <TextField fx:id="c08" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" />
+                    <TextField fx:id="c00" alignment="CENTER" styleClass="sudoku-cell" text="5" />
+                    <TextField fx:id="c01" alignment="CENTER" styleClass="sudoku-cell" text="3" GridPane.columnIndex="1" />
+                    <TextField fx:id="c02" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" />
+                    <TextField fx:id="c03" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="3" />
+                    <TextField fx:id="c04" alignment="CENTER" styleClass="sudoku-cell" text="7" GridPane.columnIndex="4" />
+                    <TextField fx:id="c05" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="5" />
+                    <TextField fx:id="c06" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" />
+                    <TextField fx:id="c07" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="7" />
+                    <TextField fx:id="c08" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="8" />
 
                     <!-- LINHA 1 -->
-                    <TextField fx:id="c10" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.rowIndex="1" />
-                    <TextField fx:id="c11" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <TextField fx:id="c12" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                    <TextField fx:id="c13" styleClass="sudoku-cell" alignment="CENTER" text="1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                    <TextField fx:id="c14" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                    <TextField fx:id="c15" styleClass="sudoku-cell" alignment="CENTER" text="5" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                    <TextField fx:id="c16" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                    <TextField fx:id="c17" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                    <TextField fx:id="c18" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+                    <TextField fx:id="c10" alignment="CENTER" styleClass="sudoku-cell" text="6" GridPane.rowIndex="1" />
+                    <TextField fx:id="c11" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="c12" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <TextField fx:id="c13" alignment="CENTER" styleClass="sudoku-cell" text="1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    <TextField fx:id="c14" alignment="CENTER" styleClass="sudoku-cell" text="9" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                    <TextField fx:id="c15" alignment="CENTER" styleClass="sudoku-cell" text="5" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                    <TextField fx:id="c16" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                    <TextField fx:id="c17" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                    <TextField fx:id="c18" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="8" GridPane.rowIndex="1" />
 
                     <!-- LINHA 2 -->
-                    <TextField fx:id="c20" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="2" />
-                    <TextField fx:id="c21" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <TextField fx:id="c22" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                    <TextField fx:id="c23" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                    <TextField fx:id="c24" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                    <TextField fx:id="c25" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                    <TextField fx:id="c26" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                    <TextField fx:id="c27" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-                    <TextField fx:id="c28" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+                    <TextField fx:id="c20" alignment="CENTER" styleClass="sudoku-cell" GridPane.rowIndex="2" />
+                    <TextField fx:id="c21" alignment="CENTER" styleClass="sudoku-cell" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="c22" alignment="CENTER" styleClass="sudoku-cell" text="8" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <TextField fx:id="c23" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    <TextField fx:id="c24" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                    <TextField fx:id="c25" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                    <TextField fx:id="c26" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                    <TextField fx:id="c27" alignment="CENTER" styleClass="sudoku-cell" text="6" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                    <TextField fx:id="c28" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="8" GridPane.rowIndex="2" />
 
                     <!-- LINHA 3 -->
-                    <TextField fx:id="c30" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.rowIndex="3" />
-                    <TextField fx:id="c31" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                    <TextField fx:id="c32" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                    <TextField fx:id="c33" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                    <TextField fx:id="c34" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                    <TextField fx:id="c35" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                    <TextField fx:id="c36" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="3" />
-                    <TextField fx:id="c37" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-                    <TextField fx:id="c38" styleClass="sudoku-cell" alignment="CENTER" text="3" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+                    <TextField fx:id="c30" alignment="CENTER" styleClass="sudoku-cell" text="8" GridPane.rowIndex="3" />
+                    <TextField fx:id="c31" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="c32" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                    <TextField fx:id="c33" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <TextField fx:id="c34" alignment="CENTER" styleClass="sudoku-cell" text="6" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                    <TextField fx:id="c35" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                    <TextField fx:id="c36" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                    <TextField fx:id="c37" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+                    <TextField fx:id="c38" alignment="CENTER" styleClass="sudoku-cell" text="3" GridPane.columnIndex="8" GridPane.rowIndex="3" />
 
                     <!-- LINHA 4 -->
-                    <TextField fx:id="c40" styleClass="sudoku-cell" alignment="CENTER" text="4" GridPane.rowIndex="4" />
-                    <TextField fx:id="c41" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    <TextField fx:id="c42" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                    <TextField fx:id="c43" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                    <TextField fx:id="c44" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-                    <TextField fx:id="c45" styleClass="sudoku-cell" alignment="CENTER" text="3" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                    <TextField fx:id="c46" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="4" />
-                    <TextField fx:id="c47" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="4" />
-                    <TextField fx:id="c48" styleClass="sudoku-cell" alignment="CENTER" text="1" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+                    <TextField fx:id="c40" alignment="CENTER" styleClass="sudoku-cell" text="4" GridPane.rowIndex="4" />
+                    <TextField fx:id="c41" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <TextField fx:id="c42" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                    <TextField fx:id="c43" alignment="CENTER" styleClass="sudoku-cell" text="8" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                    <TextField fx:id="c44" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                    <TextField fx:id="c45" alignment="CENTER" styleClass="sudoku-cell" text="3" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                    <TextField fx:id="c46" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                    <TextField fx:id="c47" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+                    <TextField fx:id="c48" alignment="CENTER" styleClass="sudoku-cell" text="1" GridPane.columnIndex="8" GridPane.rowIndex="4" />
 
                     <!-- LINHA 5 -->
-                    <TextField fx:id="c50" styleClass="sudoku-cell" alignment="CENTER" text="7" GridPane.rowIndex="5" />
-                    <TextField fx:id="c51" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                    <TextField fx:id="c52" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                    <TextField fx:id="c53" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                    <TextField fx:id="c54" styleClass="sudoku-cell" alignment="CENTER" text="2" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-                    <TextField fx:id="c55" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="5" />
-                    <TextField fx:id="c56" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="5" />
-                    <TextField fx:id="c57" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-                    <TextField fx:id="c58" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+                    <TextField fx:id="c50" alignment="CENTER" styleClass="sudoku-cell" text="7" GridPane.rowIndex="5" />
+                    <TextField fx:id="c51" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <TextField fx:id="c52" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                    <TextField fx:id="c53" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                    <TextField fx:id="c54" alignment="CENTER" styleClass="sudoku-cell" text="2" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                    <TextField fx:id="c55" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                    <TextField fx:id="c56" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                    <TextField fx:id="c57" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+                    <TextField fx:id="c58" alignment="CENTER" styleClass="sudoku-cell" text="6" GridPane.columnIndex="8" GridPane.rowIndex="5" />
 
                     <!-- LINHA 6 -->
-                    <TextField fx:id="c60" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="6" />
-                    <TextField fx:id="c61" styleClass="sudoku-cell" alignment="CENTER" text="6" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                    <TextField fx:id="c62" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                    <TextField fx:id="c63" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                    <TextField fx:id="c64" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="6" />
-                    <TextField fx:id="c65" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="6" />
-                    <TextField fx:id="c66" styleClass="sudoku-cell" alignment="CENTER" text="2" GridPane.columnIndex="6" GridPane.rowIndex="6" />
-                    <TextField fx:id="c67" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="7" GridPane.rowIndex="6" />
-                    <TextField fx:id="c68" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="6" />
+                    <TextField fx:id="c60" alignment="CENTER" styleClass="sudoku-cell" GridPane.rowIndex="6" />
+                    <TextField fx:id="c61" alignment="CENTER" styleClass="sudoku-cell" text="6" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <TextField fx:id="c62" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                    <TextField fx:id="c63" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                    <TextField fx:id="c64" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                    <TextField fx:id="c65" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                    <TextField fx:id="c66" alignment="CENTER" styleClass="sudoku-cell" text="2" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+                    <TextField fx:id="c67" alignment="CENTER" styleClass="sudoku-cell" text="8" GridPane.columnIndex="7" GridPane.rowIndex="6" />
+                    <TextField fx:id="c68" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="8" GridPane.rowIndex="6" />
 
                     <!-- LINHA 7 -->
-                    <TextField fx:id="c70" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="7" />
-                    <TextField fx:id="c71" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                    <TextField fx:id="c72" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                    <TextField fx:id="c73" styleClass="sudoku-cell" alignment="CENTER" text="4" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                    <TextField fx:id="c74" styleClass="sudoku-cell" alignment="CENTER" text="1" GridPane.columnIndex="4" GridPane.rowIndex="7" />
-                    <TextField fx:id="c75" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="5" GridPane.rowIndex="7" />
-                    <TextField fx:id="c76" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="7" />
-                    <TextField fx:id="c77" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="7" />
-                    <TextField fx:id="c78" styleClass="sudoku-cell" alignment="CENTER" text="5" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+                    <TextField fx:id="c70" alignment="CENTER" styleClass="sudoku-cell" GridPane.rowIndex="7" />
+                    <TextField fx:id="c71" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    <TextField fx:id="c72" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                    <TextField fx:id="c73" alignment="CENTER" styleClass="sudoku-cell" text="4" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                    <TextField fx:id="c74" alignment="CENTER" styleClass="sudoku-cell" text="1" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                    <TextField fx:id="c75" alignment="CENTER" styleClass="sudoku-cell" text="9" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                    <TextField fx:id="c76" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+                    <TextField fx:id="c77" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+                    <TextField fx:id="c78" alignment="CENTER" styleClass="sudoku-cell" text="5" GridPane.columnIndex="8" GridPane.rowIndex="7" />
 
                     <!-- LINHA 8 -->
-                    <TextField fx:id="c80" styleClass="sudoku-cell" alignment="CENTER" GridPane.rowIndex="8" />
-                    <TextField fx:id="c81" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                    <TextField fx:id="c82" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                    <TextField fx:id="c83" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-                    <TextField fx:id="c84" styleClass="sudoku-cell" alignment="CENTER" text="8" GridPane.columnIndex="4" GridPane.rowIndex="8" />
-                    <TextField fx:id="c85" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="8" />
-                    <TextField fx:id="c86" styleClass="sudoku-cell" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="8" />
-                    <TextField fx:id="c87" styleClass="sudoku-cell" alignment="CENTER" text="7" GridPane.columnIndex="7" GridPane.rowIndex="8" />
-                    <TextField fx:id="c88" styleClass="sudoku-cell" alignment="CENTER" text="9" GridPane.columnIndex="8" GridPane.rowIndex="8" />
+                    <TextField fx:id="c80" alignment="CENTER" styleClass="sudoku-cell" GridPane.rowIndex="8" />
+                    <TextField fx:id="c81" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                    <TextField fx:id="c82" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                    <TextField fx:id="c83" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                    <TextField fx:id="c84" alignment="CENTER" styleClass="sudoku-cell" text="8" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                    <TextField fx:id="c85" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                    <TextField fx:id="c86" alignment="CENTER" styleClass="sudoku-cell" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+                    <TextField fx:id="c87" alignment="CENTER" styleClass="sudoku-cell" text="7" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+                    <TextField fx:id="c88" alignment="CENTER" styleClass="sudoku-cell" text="9" GridPane.columnIndex="8" GridPane.rowIndex="8" />
 
-                </GridPane>
+                    </GridPane>
+                </HBox>
 
 
                 <!-- BOTÕES DO TABULEIRO -->
@@ -408,7 +413,7 @@
             <!-- COLUNA DIREITA -->
             <!-- ================================================= -->
 
-            <VBox prefWidth="400" spacing="25">
+            <VBox prefHeight="592.0" prefWidth="362.0" spacing="25">
 
                 <!-- INFORMAÇÕES -->
 
@@ -524,7 +529,9 @@
 
             </VBox>
 
-        </HBox>
+                </HBox>
+            </content>
+        </ScrollPane>
 
     </center>
 
