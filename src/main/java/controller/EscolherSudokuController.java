@@ -190,10 +190,13 @@ public class EscolherSudokuController {
             controller.setSudoku(readBoard());
 
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            controller.setPreviousScene(stage.getScene());
+            controller.setPreviousWindowState(stage.isMaximized(), stage.isFullScreen());
             Scene nextScene = new Scene(root);
             nextScene.getStylesheets().addAll(stage.getScene().getStylesheets());
             stage.setScene(nextScene);
             stage.setMaximized(true);
+            stage.setFullScreen(true);
         } catch (IOException exception) {
             showAlert(Alert.AlertType.ERROR, "Erro de navegação",
                     "Não foi possível abrir a configuração: " + exception.getMessage());

@@ -33,6 +33,9 @@ public class ConfigurarAlgoritmoController {
     @FXML private Slider sliderVelocidade;
 
     private int[][] sudoku;
+    private Scene previousScene;
+    private boolean previousMaximized;
+    private boolean previousFullScreen;
 
     @FXML
     private void initialize() {
@@ -59,9 +62,18 @@ public class ConfigurarAlgoritmoController {
         lblPreenchidas.setText(filled + " / 81");
     }
 
+    public void setPreviousScene(Scene previousScene) {
+        this.previousScene = previousScene;
+    }
+
+    public void setPreviousWindowState(boolean maximized, boolean fullScreen) {
+        this.previousMaximized = maximized;
+        this.previousFullScreen = fullScreen;
+    }
+
     @FXML
     public void trocarSudoku(ActionEvent actionEvent) {
-        openScreen(actionEvent, "EscolherSudoku.fxml");
+        returnToSudoku(actionEvent);
     }
 
     @FXML
@@ -100,16 +112,40 @@ public class ConfigurarAlgoritmoController {
 
     @FXML
     public void voltar(ActionEvent actionEvent) {
-        openScreen(actionEvent, "EscolherSudoku.fxml");
+        returnToSudoku(actionEvent);
     }
 
     @FXML
     public void proximo(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
-        alert.setTitle("Configuração salva");
+        if (sudoku == null) {
+            showError("Nenhum Sudoku foi selecionado.");
+            return;
+        }
+        if (!lblAlgoritmo.getText().contains("DFS")) {
+            showError("A tela de resolução está disponível para DFS com Backtracking.");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ResolverSudoku.fxml"));
+            Parent root = loader.load();
+            ResolverSudokuController controller = loader.getController();
+            controller.setConfiguration(sudoku, lblAlgoritmo.getText(), sliderVelocidade.getValue());
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().addAll(stage.getScene().getStylesheets());
+            stage.setFullScreen(false);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+        } catch (IOException exception) {
+            showError("Não foi possível abrir a resolução: " + exception.getMessage());
+        }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
         alert.setHeaderText(null);
-        alert.setContentText("Algoritmo selecionado: " + lblAlgoritmo.getText());
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
@@ -162,6 +198,7 @@ public class ConfigurarAlgoritmoController {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             scene.getStylesheets().addAll(stage.getScene().getStylesheets());
+            stage.setFullScreen(false);
             stage.setScene(scene);
             stage.setMaximized(true);
         } catch (IOException exception) {
@@ -171,5 +208,17 @@ public class ConfigurarAlgoritmoController {
             alert.setContentText(exception.getMessage());
             alert.showAndWait();
         }
+    }
+
+    private void returnToSudoku(ActionEvent actionEvent) {
+        if (previousScene == null) {
+            openScreen(actionEvent, "EscolherSudoku.fxml");
+            return;
+        }
+
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setFullScreen(previousFullScreen);
+        stage.setScene(previousScene);
+        stage.setMaximized(previousMaximized);
     }
 }

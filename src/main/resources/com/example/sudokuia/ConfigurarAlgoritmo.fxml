@@ -20,17 +20,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="725.0" prefWidth="1500" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurarAlgoritmoController">
+<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurarAlgoritmoController">
 
     <!-- ===================================================== -->
     <!-- TOPO -->
     <!-- ===================================================== -->
 
     <top>
-        <VBox spacing="15">
+        <VBox spacing="10">
 
             <padding>
-                <Insets bottom="15" left="30" right="30" top="20" />
+                <Insets bottom="10" left="25" right="25" top="10" />
             </padding>
 
             <Label text="▦  Resolvedor de Sudoku">
@@ -39,7 +39,7 @@
                 </font>
             </Label>
 
-            <HBox alignment="CENTER" spacing="30">
+            <HBox alignment="CENTER" spacing="20">
 
                 <!-- ETAPA 1 -->
                 <HBox alignment="CENTER" spacing="10">
@@ -120,17 +120,17 @@
 
     <center>
 
-        <HBox spacing="20">
+        <HBox alignment="TOP_CENTER" spacing="15">
 
             <padding>
-                <Insets bottom="10" left="25" right="25" top="10" />
+                <Insets bottom="5" left="20" right="20" top="5" />
             </padding>
 
             <!-- ================================================= -->
             <!-- ESQUERDA - RESUMO DO SUDOKU -->
             <!-- ================================================= -->
 
-            <VBox prefHeight="677.0" prefWidth="356.0" spacing="15">
+            <VBox prefWidth="290.0" spacing="10">
 
                 <Label text="Resumo do Sudoku">
                     <font>
@@ -205,7 +205,7 @@
             <!-- MEIO - CONFIGURAÇÃO -->
             <!-- ================================================= -->
 
-            <VBox prefWidth="720" spacing="18">
+            <VBox prefWidth="590.0" spacing="12">
 
                 <Label text="Configuração do Algoritmo">
                     <font>
@@ -252,11 +252,11 @@
                 </HBox>
 
 
-                <HBox spacing="25">
+                <HBox spacing="15">
 
                     <!-- COLUNA BUSCA CEGA -->
 
-                    <VBox prefWidth="330" spacing="15">
+                    <VBox prefWidth="280.0" spacing="10">
 
                         <Label text="Busca Cega">
                             <font>
@@ -264,12 +264,12 @@
                             </font>
                         </Label>
 
-                        <Label prefWidth="300" text="Explora o espaço de estados sem informações adicionais." wrapText="true" />
+                        <Label prefWidth="270.0" text="Explora o espaço de estados sem informações adicionais." wrapText="true" />
 
 
                         <Label text="Algoritmo" />
 
-                        <ComboBox fx:id="cbBuscaCega" onAction="#alterarAlgoritmoCego" prefWidth="300">
+                        <ComboBox fx:id="cbBuscaCega" onAction="#alterarAlgoritmoCego" prefWidth="270.0">
 
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
@@ -294,7 +294,7 @@
 
                     <!-- COLUNA BUSCA HEURÍSTICA -->
 
-                    <VBox prefWidth="330" spacing="15">
+                    <VBox prefWidth="280.0" spacing="10">
 
                         <Label text="Busca Heurística">
                             <font>
@@ -302,12 +302,12 @@
                             </font>
                         </Label>
 
-                        <Label prefWidth="300" text="Utiliza uma heurística para escolher os estados mais promissores." wrapText="true" />
+                        <Label prefWidth="270.0" text="Utiliza uma heurística para escolher os estados mais promissores." wrapText="true" />
 
 
                         <Label text="Heurística" />
 
-                        <ComboBox fx:id="cbHeuristica" disable="true" onAction="#alterarHeuristica" prefWidth="300">
+                        <ComboBox fx:id="cbHeuristica" disable="true" onAction="#alterarHeuristica" prefWidth="270.0">
 
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
@@ -337,7 +337,7 @@
                 </Label>
 
 
-                <HBox spacing="25">
+                <HBox spacing="15">
 
                     <CheckBox fx:id="chkAnimacao" selected="true" text="Exibir animação" />
 
@@ -354,7 +354,7 @@
 
                     <Label text="Velocidade inicial:" />
 
-                    <Slider fx:id="sliderVelocidade" majorTickUnit="0.5" max="3.0" min="0.1" prefWidth="300" showTickLabels="true" showTickMarks="true" value="1.0" />
+                    <Slider fx:id="sliderVelocidade" majorTickUnit="0.5" max="3.0" min="0.1" prefWidth="260.0" showTickLabels="true" showTickMarks="true" value="1.0" />
 
                     <Label fx:id="lblVelocidade" text="1.0x" />
 
@@ -367,7 +367,7 @@
             <!-- DIREITA - DESCRIÇÃO -->
             <!-- ================================================= -->
 
-            <VBox prefHeight="677.0" prefWidth="495.0" spacing="18">
+            <VBox prefWidth="320.0" spacing="12">
 
                 <Label text="Descrição do algoritmo">
                     <font>
@@ -385,7 +385,7 @@
                 </Label>
 
 
-                <Label fx:id="lblDescricaoAlgoritmo" prefWidth="330" text="Explora o espaço de estados em profundidade. Para cada célula vazia, tenta valores válidos e avança para o próximo estado. Quando não existe um valor possível, retorna ao estado anterior utilizando backtracking." wrapText="true" />
+                <Label fx:id="lblDescricaoAlgoritmo" prefWidth="310.0" text="Explora o espaço de estados em profundidade. Para cada célula vazia, tenta valores válidos e avança para o próximo estado. Quando não existe um valor possível, retorna ao estado anterior utilizando backtracking." wrapText="true" />
 
 
                 <Separator />
