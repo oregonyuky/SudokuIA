@@ -26,7 +26,7 @@ public class ResolverSudokuController {
     @FXML private Label lblAlgoritmo, lblEstado, lblProfundidade, lblTempo, lblNos,
             lblPassos, lblBacktracks, lblVelocidade, lblLinhaAtual, lblColunaAtual,
             lblValoresValidos, lblTentando, lblAcao, lblNosArvore;
-    @FXML private Button btnIniciar, btnPausar, btnPasso, btnParar, btnResultados;
+    @FXML private Button btnIniciar, btnConstruir, btnPausar, btnPasso, btnParar, btnResultados;
     @FXML private Slider sliderVelocidade;
     @FXML private ListView<String> listPilha;
     @FXML private TextArea txtLog;
@@ -40,6 +40,7 @@ public class ResolverSudokuController {
     private String algorithm = "DFS com Backtracking";
     private volatile double speed = 1;
     private volatile boolean paused, oneStep, stopping;
+    private boolean animatedExecution;
     private Task<int[][]> task;
     private Dfs solver;
     private long startedAt, elapsedNanos;
@@ -70,23 +71,33 @@ public class ResolverSudokuController {
         for (int r = 0; r < SIZE; r++) for (int c = 0; c < SIZE; c++)
             if (sudoku[r][c] != 0) fixed.add(r * SIZE + c);
         render(initialBoard);
-        log("Sudoku recebido. Clique em Iniciar para executar o DFS.");
+        log("Sudoku recebido. Clique em Iniciar para acompanhar o DFS ou em Construir Sudoku para preencher automaticamente.");
     }
 
     @FXML public void iniciar(ActionEvent event) {
+        startSolver(true);
+    }
+
+    @FXML public void construirSudoku(ActionEvent event) {
+        startSolver(false);
+    }
+
+    private void startSolver(boolean animated) {
         if (task != null && task.isRunning()) return;
         if (initialBoard == null) { alert("Sudoku ausente", "Volte e selecione um Sudoku."); return; }
         reset();
+        animatedExecution = animated;
         Matriz matriz = new Matriz();
         matriz.setMatriz(copy(initialBoard));
         solver = new Dfs(matriz);
-        solver.setStepListener(this::receiveStep);
+        if (animated) solver.setStepListener(this::receiveStep);
         startedAt = System.nanoTime();
         task = new Task<int[][]>() { @Override protected int[][] call() { return solver.dfs(); } };
         task.setOnSucceeded(e -> finish(task.getValue()));
         task.setOnCancelled(e -> stopped());
         task.setOnFailed(e -> failed(task.getException()));
-        controls(true); lblEstado.setText("Executando"); log("DFS iniciado.");
+        controls(true); lblEstado.setText(animated ? "Executando" : "Construindo");
+        log(animated ? "DFS iniciado." : "Construindo o Sudoku automaticamente.");
         Thread thread = new Thread(task, "sudoku-dfs"); thread.setDaemon(true); thread.start();
     }
 
@@ -120,7 +131,9 @@ public class ResolverSudokuController {
             if (initialBoard != null) controller.setSudoku(initialBoard);
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root); scene.getStylesheets().addAll(stage.getScene().getStylesheets());
-            stage.setScene(scene); stage.setMaximized(true); stage.setFullScreen(true);
+            stage.setFullScreen(false);
+            stage.setScene(scene);
+            stage.setMaximized(true);
         } catch (IOException e) { alert("Erro de navegação", e.getMessage()); }
     }
     @FXML public void resultados(ActionEvent event) {
@@ -162,6 +175,10 @@ public class ResolverSudokuController {
 
     private void finish(int[][] result) {
         elapsedNanos = System.nanoTime() - startedAt; finalBoard = copy(result); render(finalBoard); controls(false);
+        lblProfundidade.setText("" + solver.getMaximumDepth());
+        lblNos.setText("" + solver.getExploredNodes());
+        lblPassos.setText("" + solver.getSteps());
+        lblBacktracks.setText("" + solver.getBacktracks());
         lblTempo.setText(formatTime(elapsedNanos)); lblEstado.setText(solver.isSolved() ? "Concluído" : "Sem solução");
         lblAcao.setText(solver.isSolved() ? "Solução encontrada" : "Busca encerrada sem solução");
         btnResultados.setDisable(!solver.isSolved()); btnIniciar.setText("Reiniciar");
@@ -196,7 +213,8 @@ public class ResolverSudokuController {
         btnResultados.setDisable(true);
     }
     private void controls(boolean running) {
-        btnIniciar.setDisable(running); btnPausar.setDisable(!running); btnPasso.setDisable(true);
+        btnIniciar.setDisable(running); btnConstruir.setDisable(running);
+        btnPausar.setDisable(!running || !animatedExecution); btnPasso.setDisable(true);
         btnParar.setDisable(!running); if (!running) btnPausar.setText("Pausar");
     }
     private void stopSolver() {

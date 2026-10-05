@@ -108,8 +108,17 @@
     <!-- ===================================================== -->
 
     <center>
-
-        <HBox spacing="20">
+        <ScrollPane fx:id="scrollResolucao"
+                    fitToHeight="false"
+                    fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    pannable="true"
+                    vbarPolicy="AS_NEEDED">
+            <content>
+                <StackPane alignment="TOP_CENTER">
+                    <HBox alignment="TOP_CENTER"
+                          minWidth="1460"
+                          spacing="20">
 
             <padding>
                 <Insets top="10" right="20" bottom="10" left="20"/>
@@ -254,6 +263,12 @@
                             prefWidth="110"
                             prefHeight="40"
                             onAction="#iniciar"/>
+
+                    <Button fx:id="btnConstruir"
+                            text="Construir Sudoku"
+                            prefWidth="130"
+                            prefHeight="40"
+                            onAction="#construirSudoku"/>
 
                     <Button fx:id="btnPausar"
                             text="Ⅱ  Pausar"
@@ -424,7 +439,10 @@
 
             </VBox>
 
-        </HBox>
+                    </HBox>
+                </StackPane>
+            </content>
+        </ScrollPane>
 
     </center>
 

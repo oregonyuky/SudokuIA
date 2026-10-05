@@ -1,0 +1,15 @@
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\Definicao.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\HelloApplication.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\HelloController.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\Launcher.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\model\Matriz.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\solver\Dfs.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\solver\HillClimbing.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\utils\Edge.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\utils\Pair.java
+C:\Users\felip\SudokuIA\src\main\java\com\example\sudokuia\validation\Valid.java
+C:\Users\felip\SudokuIA\src\main\java\controller\ConfigurarAlgoritmoController.java
+C:\Users\felip\SudokuIA\src\main\java\controller\EscolherSudokuController.java
+C:\Users\felip\SudokuIA\src\main\java\controller\ResolverSudokuController.java
+C:\Users\felip\SudokuIA\src\main\java\controller\ResultadoSudokuController.java
+C:\Users\felip\SudokuIA\src\main\java\module-info.java

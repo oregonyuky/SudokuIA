@@ -1,6 +1,7 @@
 package controller;
 
 import com.example.sudokuia.HelloApplication;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -31,6 +33,7 @@ public class ConfigurarAlgoritmoController {
     @FXML private ComboBox<String> cbBuscaCega;
     @FXML private ComboBox<String> cbHeuristica;
     @FXML private Slider sliderVelocidade;
+    @FXML private ScrollPane scrollConfiguracao;
 
     private int[][] sudoku;
     private Scene previousScene;
@@ -39,6 +42,19 @@ public class ConfigurarAlgoritmoController {
 
     @FXML
     private void initialize() {
+        scrollConfiguracao.setFitToHeight(false);
+        scrollConfiguracao.setFitToWidth(true);
+        scrollConfiguracao.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollConfiguracao.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        Platform.runLater(() -> {
+            if (gridSudoku.getScene() != null && gridSudoku.getScene().getWindow() instanceof Stage) {
+                Stage stage = (Stage) gridSudoku.getScene().getWindow();
+                stage.setMaximized(true);
+                stage.setFullScreen(true);
+            }
+        });
+
         cbBuscaCega.getSelectionModel().selectFirst();
         cbHeuristica.getSelectionModel().selectFirst();
         sliderVelocidade.valueProperty().addListener((observable, oldValue, newValue) ->

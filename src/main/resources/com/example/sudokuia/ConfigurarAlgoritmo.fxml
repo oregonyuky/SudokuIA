@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -17,6 +18,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -119,8 +121,10 @@
     <!-- ===================================================== -->
 
     <center>
-
-        <HBox alignment="TOP_CENTER" spacing="15">
+        <ScrollPane fx:id="scrollConfiguracao" fitToHeight="false" fitToWidth="true" hbarPolicy="NEVER" pannable="true" vbarPolicy="ALWAYS">
+            <content>
+                <StackPane alignment="TOP_CENTER">
+                    <HBox alignment="TOP_CENTER" minHeight="470.0" minWidth="1230.0" spacing="15">
 
             <padding>
                 <Insets bottom="5" left="20" right="20" top="5" />
@@ -428,7 +432,10 @@
 
             </VBox>
 
-        </HBox>
+                    </HBox>
+                </StackPane>
+            </content>
+        </ScrollPane>
 
     </center>
 
