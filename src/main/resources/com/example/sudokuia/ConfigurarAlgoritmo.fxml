@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurarAlgoritmoController">
+<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurarAlgoritmoController">
 
     <!-- ===================================================== -->
     <!-- TOPO -->
@@ -250,6 +250,9 @@
                         <font>
                             <Font size="18" />
                         </font>
+                           <HBox.margin>
+                              <Insets left="150.0" />
+                           </HBox.margin>
 
                     </RadioButton>
 
@@ -278,7 +281,6 @@
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="DFS com Backtracking" />
-                                    <String fx:value="Busca em Largura (BFS)" />
                                 </FXCollections>
                             </items>
 
@@ -316,8 +318,6 @@
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="MRV - Minimum Remaining Values" />
-                                    <String fx:value="Número de células vazias" />
-                                    <String fx:value="Grau de restrição" />
                                 </FXCollections>
 
                             </items>
@@ -395,40 +395,8 @@
                 <Separator />
 
 
-                <Label text="Características">
-                    <font>
-                        <Font size="18" />
-                    </font>
-                </Label>
-
-
-                <VBox spacing="8">
-
-                    <Label fx:id="lblCaracteristica1" text="• Busca não informada" />
-
-                    <Label fx:id="lblCaracteristica2" text="• Utiliza pilha ou recursão" />
-
-                    <Label fx:id="lblCaracteristica3" text="• Pode explorar muitos estados" />
-
-                    <Label fx:id="lblCaracteristica4" text="• Garante solução se houver solução" />
-
-                </VBox>
-
-
-                <Separator />
-            <Label text="Métodos utilizados">
-               <font>
-                  <Font size="18" />
-               </font>
-            </Label>
-            <VBox spacing="8">
-               <children>
-                  <Label fx:id="lblCaracteristica11" text="• Busca não informada" />
-                  <Label fx:id="lblCaracteristica21" text="• Utiliza pilha ou recursão" />
-                  <Label fx:id="lblCaracteristica31" text="• Pode explorar muitos estados" />
-                  <Label fx:id="lblCaracteristica41" text="• Garante solução se houver solução" />
-               </children>
-            </VBox>
+                <VBox spacing="8" />
+            <VBox spacing="8" />
 
             </VBox>
 

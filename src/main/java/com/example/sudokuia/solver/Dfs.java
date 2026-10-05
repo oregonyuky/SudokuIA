@@ -14,180 +14,197 @@ import java.util.Stack;
 /** Busca em profundidade iterativa com backtracking. */
 public class Dfs implements Definicao {
     private final Matriz matriz;
-    private volatile boolean cancelled;
-    private volatile boolean solved;
-    private long exploredNodes;
-    private long steps;
+    private volatile boolean cancelado;
+    private volatile boolean resolvido;
+    private long nosExplorados;
+    private long passos;
     private long backtracks;
-    private int maximumDepth;
-    private StepListener stepListener;
+    private int profundidadeMaxima;
+    private StepListener ouvinte;
 
     public interface StepListener {
-        void onStep(Step step) throws InterruptedException;
+        void onStep(Step etapa) throws InterruptedException;
     }
 
-    /** Fotografia imutável de uma etapa, usada pela interface sem acoplá-la ao JavaFX. */
+    // Guarda os dados de uma etapa para atualizar a interface.
     public static final class Step {
         public enum Type { TRY, PLACE, BACKTRACK, SOLVED, NO_SOLUTION }
 
-        private final Type type;
-        private final int[][] board;
-        private final int row;
-        private final int column;
-        private final int value;
-        private final List<Integer> validValues;
-        private final int depth;
-        private final int stackSize;
-        private final long exploredNodes;
-        private final long steps;
+        private final Type tipo;
+        private final int[][] tabuleiro;
+        private final int linha;
+        private final int coluna;
+        private final int valor;
+        private final List<Integer> valoresValidos;
+        private final int profundidade;
+        private final int tamanhoPilha;
+        private final long nosExplorados;
+        private final long passos;
         private final long backtracks;
 
-        private Step(Type type, int[][] board, int row, int column, int value,
-                     List<Integer> validValues, int depth, int stackSize,
-                     long exploredNodes, long steps, long backtracks) {
-            this.type = type;
-            this.board = board;
-            this.row = row;
-            this.column = column;
-            this.value = value;
-            this.validValues = Collections.unmodifiableList(new ArrayList<Integer>(validValues));
-            this.depth = depth;
-            this.stackSize = stackSize;
-            this.exploredNodes = exploredNodes;
-            this.steps = steps;
+        private Step(Type tipo, int[][] tabuleiro, int linha, int coluna, int valor,
+                     List<Integer> valoresValidos, int profundidade, int tamanhoPilha,
+                     long nosExplorados, long passos, long backtracks) {
+            this.tipo = tipo;
+            this.tabuleiro = tabuleiro;
+            this.linha = linha;
+            this.coluna = coluna;
+            this.valor = valor;
+            this.valoresValidos = Collections.unmodifiableList(new ArrayList<Integer>(valoresValidos));
+            this.profundidade = profundidade;
+            this.tamanhoPilha = tamanhoPilha;
+            this.nosExplorados = nosExplorados;
+            this.passos = passos;
             this.backtracks = backtracks;
         }
 
-        public Type getType() { return type; }
-        public int[][] getBoard() { return copy(board); }
-        public int getRow() { return row; }
-        public int getColumn() { return column; }
-        public int getValue() { return value; }
-        public List<Integer> getValidValues() { return validValues; }
-        public int getDepth() { return depth; }
-        public int getStackSize() { return stackSize; }
-        public long getExploredNodes() { return exploredNodes; }
-        public long getSteps() { return steps; }
+        public Type getType() { return tipo; }
+        public int[][] getBoard() { return copiarMatriz(tabuleiro); }
+        public int getRow() { return linha; }
+        public int getColumn() { return coluna; }
+        public int getValue() { return valor; }
+        public List<Integer> getValidValues() { return valoresValidos; }
+        public int getDepth() { return profundidade; }
+        public int getStackSize() { return tamanhoPilha; }
+        public long getExploredNodes() { return nosExplorados; }
+        public long getSteps() { return passos; }
         public long getBacktracks() { return backtracks; }
     }
 
-    public Dfs(Matriz matriz) { this.matriz = matriz; }
+    public Dfs(Matriz matriz) {
+        this.matriz = matriz;
+    }
 
-    public void setStepListener(StepListener stepListener) { this.stepListener = stepListener; }
-    public void cancel() { cancelled = true; }
-    public boolean isSolved() { return solved; }
-    public long getExploredNodes() { return exploredNodes; }
-    public long getSteps() { return steps; }
+    public void setStepListener(StepListener ouvinte) {
+        this.ouvinte = ouvinte;
+    }
+    public void cancel() {
+        cancelado = true;
+    }
+    public boolean isSolved() { return resolvido; }
+    public long getExploredNodes() { return nosExplorados; }
+    public long getSteps() { return passos; }
     public long getBacktracks() { return backtracks; }
-    public int getMaximumDepth() { return maximumDepth; }
+    public int getMaximumDepth() { return profundidadeMaxima; }
 
     public Pair findBlank() {
-        int[][] board = matriz.getMatriz();
-        for (int row = 0; row < n; row++) {
-            for (int column = 0; column < n; column++) {
-                if (board[row][column] == 0) return new Pair(row, column);
+        int[][] tabuleiro = matriz.getMatriz();
+        for (int linha = 0; linha < n; linha++) {
+            for (int coluna = 0; coluna < n; coluna++) {
+                if (tabuleiro[linha][coluna] == 0) {
+                    return new Pair(linha, coluna);
+                }
             }
         }
         return new Pair(-1, -1);
     }
 
-    public boolean isCompleto(Pair position) { return position.getFirst() == -1; }
+    public boolean isCompleto(Pair posicao) { return posicao.getFirst() == -1; }
 
     public int[][] dfs() {
-        resetMetrics();
-        int[][] board = matriz.getMatriz();
-        Stack<Edge> stack = new Stack<Edge>();
-        Pair blank = findBlank();
-        if (isCompleto(blank)) {
-            solved = true;
-            emit(Step.Type.SOLVED, -1, -1, 0, Collections.<Integer>emptyList(), 0, 0);
-            return board;
+        reiniciarContadores();
+        int[][] tabuleiro = matriz.getMatriz();
+        Stack<Edge> pilha = new Stack<Edge>();
+        Pair vazio = findBlank();
+        if (isCompleto(vazio)) {
+            resolvido = true;
+            emitirEtapa(Step.Type.SOLVED, -1, -1, 0, Collections.<Integer>emptyList(), 0, 0);
+            return tabuleiro;
         }
 
-        stack.push(new Edge(blank.getFirst(), blank.getSecond(), 1));
-        int depth = 0;
-        while (!stack.empty() && !cancelled && !Thread.currentThread().isInterrupted()) {
-            Edge edge = stack.pop();
-            int row = edge.getI();
-            int column = edge.getJ();
-            int value = edge.getVal();
-            board[row][column] = 0;
-            List<Integer> validValues = validValues(board, row, column);
-            emit(Step.Type.TRY, row, column, value, validValues, depth, stack.size());
+        pilha.push(new Edge(vazio.getFirst(), vazio.getSecond(), 1));
+        int profundidade = 0;
+        while (!pilha.empty() && !cancelado && !Thread.currentThread().isInterrupted()) {
+            Edge tentativa = pilha.pop();
+            int linha = tentativa.getI();
+            int coluna = tentativa.getJ();
+            int valor = tentativa.getVal();
+            tabuleiro[linha][coluna] = 0;
+            List<Integer> valoresValidos = valoresValidos(tabuleiro, linha, coluna);
+            emitirEtapa(Step.Type.TRY, linha, coluna, valor, valoresValidos, profundidade, pilha.size());
 
-            while (value <= n && !Valid.isValid(board, row, column, value)) {
-                value++;
-                steps++;
+            while (valor <= n && !Valid.isValid(tabuleiro, linha, coluna, valor)) {
+                valor++;
+                passos++;
             }
-            if (value <= n) {
-                board[row][column] = value;
-                exploredNodes++;
-                steps++;
-                stack.push(new Edge(row, column, value + 1));
-                depth++;
-                maximumDepth = Math.max(maximumDepth, depth);
-                emit(Step.Type.PLACE, row, column, value, validValues, depth, stack.size());
+            if (valor <= n) {
+                tabuleiro[linha][coluna] = valor;
+                nosExplorados++;
+                passos++;
+                // Guarda o próximo valor para tentar se for preciso voltar.
+                pilha.push(new Edge(linha, coluna, valor + 1));
+                profundidade++;
+                profundidadeMaxima = Math.max(profundidadeMaxima, profundidade);
+                emitirEtapa(Step.Type.PLACE, linha, coluna, valor, valoresValidos, profundidade, pilha.size());
 
-                Pair next = findBlank();
-                if (isCompleto(next)) {
-                    solved = true;
-                    emit(Step.Type.SOLVED, row, column, value, validValues, depth, stack.size());
-                    return board;
+                Pair proximoVazio = findBlank();
+                if (isCompleto(proximoVazio)) {
+                    resolvido = true;
+                    emitirEtapa(Step.Type.SOLVED, linha, coluna, valor, valoresValidos, profundidade, pilha.size());
+                    return tabuleiro;
                 }
-                stack.push(new Edge(next.getFirst(), next.getSecond(), 1));
+                pilha.push(new Edge(proximoVazio.getFirst(), proximoVazio.getSecond(), 1));
             } else {
                 backtracks++;
-                depth = Math.max(0, depth - 1);
-                emit(Step.Type.BACKTRACK, row, column, 0, validValues, depth, stack.size());
+                profundidade = Math.max(0, profundidade - 1);
+                emitirEtapa(Step.Type.BACKTRACK, linha, coluna, 0, valoresValidos, profundidade, pilha.size());
             }
         }
 
-        if (!cancelled && !Thread.currentThread().isInterrupted()) {
-            emit(Step.Type.NO_SOLUTION, -1, -1, 0, Collections.<Integer>emptyList(), depth, stack.size());
+        if (!cancelado && !Thread.currentThread().isInterrupted()) {
+            emitirEtapa(Step.Type.NO_SOLUTION, -1, -1, 0, Collections.<Integer>emptyList(), profundidade, pilha.size());
         }
-        return board;
+        return tabuleiro;
     }
 
     public void exibir() {
-        int[][] board = dfs();
-        for (int row = 0; row < n; row++) {
-            for (int column = 0; column < n; column++) System.out.print(board[row][column] + " ");
+        int[][] tabuleiro = dfs();
+        for (int linha = 0; linha < n; linha++) {
+            for (int coluna = 0; coluna < n; coluna++) {
+                System.out.print(tabuleiro[linha][coluna] + " ");
+            }
             System.out.println();
         }
     }
 
-    private void resetMetrics() {
-        cancelled = false;
-        solved = false;
-        exploredNodes = 0;
-        steps = 0;
+    private void reiniciarContadores() {
+        cancelado = false;
+        resolvido = false;
+        nosExplorados = 0;
+        passos = 0;
         backtracks = 0;
-        maximumDepth = 0;
+        profundidadeMaxima = 0;
     }
 
-    private List<Integer> validValues(int[][] board, int row, int column) {
-        List<Integer> values = new ArrayList<Integer>();
-        for (int value = 1; value <= n; value++) {
-            if (Valid.isValid(board, row, column, value)) values.add(value);
+    private List<Integer> valoresValidos(int[][] tabuleiro, int linha, int coluna) {
+        List<Integer> valores = new ArrayList<Integer>();
+        for (int valor = 1; valor <= n; valor++) {
+            if (Valid.isValid(tabuleiro, linha, coluna, valor)) {
+                valores.add(valor);
+            }
         }
-        return values;
+        return valores;
     }
 
-    private void emit(Step.Type type, int row, int column, int value,
-                      List<Integer> validValues, int depth, int stackSize) {
-        if (stepListener == null) return;
+    private void emitirEtapa(Step.Type tipo, int linha, int coluna, int valor,
+                      List<Integer> valoresValidos, int profundidade, int tamanhoPilha) {
+        if (ouvinte == null) {
+            return;
+        }
         try {
-            stepListener.onStep(new Step(type, copy(matriz.getMatriz()), row, column, value,
-                    validValues, depth, stackSize, exploredNodes, steps, backtracks));
-        } catch (InterruptedException exception) {
+            ouvinte.onStep(new Step(tipo, copiarMatriz(matriz.getMatriz()), linha, coluna, valor,
+                    valoresValidos, profundidade, tamanhoPilha, nosExplorados, passos, backtracks));
+        } catch (InterruptedException excecao) {
             Thread.currentThread().interrupt();
-            cancelled = true;
+            cancelado = true;
         }
     }
 
-    private static int[][] copy(int[][] source) {
-        int[][] result = new int[n][n];
-        for (int row = 0; row < n; row++) System.arraycopy(source[row], 0, result[row], 0, n);
-        return result;
+    private static int[][] copiarMatriz(int[][] origem) {
+        int[][] copia = new int[n][n];
+        for (int linha = 0; linha < n; linha++) {
+            System.arraycopy(origem[linha], 0, copia[linha], 0, n);
+        }
+        return copia;
     }
 }

@@ -58,35 +58,32 @@ public class EscolherSudokuController {
             if (!(node instanceof TextField)) {
                 continue;
             }
-
             TextField cell = (TextField) node;
-            int column = gridIndex(GridPane.getColumnIndex(cell));
-            int row = gridIndex(GridPane.getRowIndex(cell));
-            cells[row][column] = cell;
-            applyBlockBorder(cell, row, column);
-
+            int j = gridIndex(GridPane.getColumnIndex(cell));
+            int i = gridIndex(GridPane.getRowIndex(cell));
+            cells[i][j] = cell;
+            applyBlockBorder(cell, i, j);
             cell.setTextFormatter(new TextFormatter<String>(change ->
                     change.getControlNewText().matches("[1-9]?") ? change : null));
             cell.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!updatingBoard) {
-                    removeStateClasses(cell);
+                    removerStateClasses(cell);
                     if (!newValue.isEmpty()) {
-                        addStyleClass(cell, "sudoku-current");
+                        adicionarStateClasses(cell, "sudoku-current");
                     }
                 }
-                updateFilledCount();
+                 atualizarContagemDePreenchidas();
             });
         }
 
-        markExistingValuesAsFixed();
-        updateFilledCount();
+        marcarOsValoresExistentesFixos();
+         atualizarContagemDePreenchidas();
     }
 
     @FXML
     public void inserirManual(ActionEvent actionEvent) {
-        clearBoard();
-        updateInformation("Manual", "Não definida",
-                "Digite os valores conhecidos diretamente no tabuleiro.");
+        limparTabuleiro();
+        updateInformation("Manual", "Não definida", "Digite os valores conhecidos diretamente no tabuleiro.");
         cells[0][0].requestFocus();
     }
 
@@ -107,10 +104,10 @@ public class EscolherSudokuController {
         try {
             String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
             int[][] board = parseBoard(content);
-            applyBoard(board, "sudoku-fixed");
+            aplicarTabuleiro(board, "sudoku-fixed");
             updateInformation(file.getName(), "Importado",
                     "Sudoku carregado do arquivo " + file.getName() + ".");
-            if (!validateBoard()) {
+            if (!validarTabuleiro()) {
                 showAlert(Alert.AlertType.WARNING, "Arquivo carregado",
                         "O arquivo contém números repetidos. As células foram destacadas.");
             }
@@ -124,24 +121,23 @@ public class EscolherSudokuController {
 
     @FXML
     public void gerarAleatorio(ActionEvent actionEvent) {
-        applyBoard(createRandomPuzzle(), "sudoku-fixed");
+        aplicarTabuleiro(createRandomPuzzle(), "sudoku-fixed");
         updateInformation("Sudoku aleatório", "Médio",
                 "Sudoku válido gerado automaticamente com 36 células preenchidas.");
     }
 
     @FXML
     public void limparTabuleiro(ActionEvent actionEvent) {
-        clearBoard();
+        limparTabuleiro();
         updateInformation("Manual", "Não definida", "Tabuleiro vazio.");
     }
 
     @FXML
     public void verificarTabuleiro(ActionEvent actionEvent) {
-        boolean valid = validateBoard();
-        int filled = countFilledCells();
-        if (!valid) {
-            showAlert(Alert.AlertType.ERROR, "Sudoku inválido",
-                    "Existem números repetidos em uma linha, coluna ou bloco 3x3.");
+        boolean ok = validarTabuleiro();
+        int filled = contarCelulasPreenchidas();
+        if (!ok) {
+            showAlert(Alert.AlertType.ERROR, "Sudoku inválido", "Existem números repetidos em uma linha, coluna ou bloco 3x3.");
         } else if (filled == SIZE * SIZE) {
             showAlert(Alert.AlertType.INFORMATION, "Sudoku completo", "O Sudoku está completo e válido.");
         } else {
@@ -152,7 +148,7 @@ public class EscolherSudokuController {
 
     @FXML
     public void preencherExemplo(ActionEvent actionEvent) {
-        applyBoard(EXAMPLE, "sudoku-fixed");
+        aplicarTabuleiro(EXAMPLE, "sudoku-fixed");
         updateInformation("Fácil", "Fácil",
                 "Exemplo clássico de Sudoku com nível de dificuldade fácil.");
     }
@@ -172,14 +168,12 @@ public class EscolherSudokuController {
 
     @FXML
     public void proximo(ActionEvent actionEvent) {
-        if (countFilledCells() == 0) {
-            showAlert(Alert.AlertType.WARNING, "Tabuleiro vazio",
-                    "Preencha ou selecione um Sudoku antes de continuar.");
+        if (contarCelulasPreenchidas() == 0) {
+            showAlert(Alert.AlertType.WARNING, "Tabuleiro vazio", "Preencha ou selecione um Sudoku antes de continuar.");
             return;
         }
-        if (!validateBoard()) {
-            showAlert(Alert.AlertType.ERROR, "Sudoku inválido",
-                    "Corrija as células destacadas antes de continuar.");
+        if (!validarTabuleiro()) {
+            showAlert(Alert.AlertType.ERROR, "Sudoku inválido", "Corrija as células destacadas antes de continuar.");
             return;
         }
 
@@ -187,11 +181,11 @@ public class EscolherSudokuController {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ConfigurarAlgoritmo.fxml"));
             Parent root = loader.load();
             ConfigurarAlgoritmoController controller = loader.getController();
-            controller.setSudoku(readBoard());
+            controller.definirSudoku(lerTabuleiro());
 
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            controller.setPreviousScene(stage.getScene());
-            controller.setPreviousWindowState(stage.isMaximized(), stage.isFullScreen());
+            controller.definirCenaAnterior(stage.getScene());
+            controller.definirEstadoAnteriorDaJanela(stage.isMaximized(), stage.isFullScreen());
             Scene nextScene = new Scene(root);
             nextScene.getStylesheets().addAll(stage.getScene().getStylesheets());
             stage.setFullScreen(false);
@@ -207,63 +201,63 @@ public class EscolherSudokuController {
         return index == null ? 0 : index;
     }
 
-    private void applyBlockBorder(TextField cell, int row, int column) {
-        boolean right = column == 2 || column == 5;
-        boolean bottom = row == 2 || row == 5;
+    private void applyBlockBorder(TextField cell, int i, int j) {
+        boolean right = j == 2 || j == 5;
+        boolean bottom = i == 2 || i == 5;
         if (right && bottom) {
-            addStyleClass(cell, "sudoku-right-bottom");
+            adicionarStateClasses(cell, "sudoku-right-bottom");
         } else if (right) {
-            addStyleClass(cell, "sudoku-right");
+            adicionarStateClasses(cell, "sudoku-right");
         } else if (bottom) {
-            addStyleClass(cell, "sudoku-bottom");
+            adicionarStateClasses(cell, "sudoku-bottom");
         }
     }
 
-    private void markExistingValuesAsFixed() {
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                if (cells[row][column] != null && !cells[row][column].getText().isEmpty()) {
-                    addStyleClass(cells[row][column], "sudoku-fixed");
+    private void marcarOsValoresExistentesFixos() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (cells[i][j] != null && !cells[i][j].getText().isEmpty()) {
+                    adicionarStateClasses(cells[i][j], "sudoku-fixed");
                 }
             }
         }
     }
 
-    private void clearBoard() {
+    private void limparTabuleiro() {
         updatingBoard = true;
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                cells[row][column].clear();
-                removeStateClasses(cells[row][column]);
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                cells[i][j].clear();
+                removerStateClasses(cells[i][j]);
             }
         }
         updatingBoard = false;
-        updateFilledCount();
+         atualizarContagemDePreenchidas();
     }
 
-    private void applyBoard(int[][] board, String styleClass) {
+    private void aplicarTabuleiro(int[][] board, String styleClass) {
         updatingBoard = true;
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                TextField cell = cells[row][column];
-                removeStateClasses(cell);
-                int value = board[row][column];
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                TextField cell = cells[i][j];
+                removerStateClasses(cell);
+                int value = board[i][j];
                 cell.setText(value == 0 ? "" : Integer.toString(value));
                 if (value != 0) {
-                    addStyleClass(cell, styleClass);
+                    adicionarStateClasses(cell, styleClass);
                 }
             }
         }
         updatingBoard = false;
-        updateFilledCount();
+         atualizarContagemDePreenchidas();
     }
 
-    private int[][] readBoard() {
+    private int[][] lerTabuleiro() {
         int[][] board = new int[SIZE][SIZE];
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                String value = cells[row][column].getText().trim();
-                board[row][column] = value.isEmpty() ? 0 : Integer.parseInt(value);
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                String value = cells[i][j].getText().trim();
+                board[i][j] = value.isEmpty() ? 0 : Integer.parseInt(value);
             }
         }
         return board;
@@ -288,52 +282,49 @@ public class EscolherSudokuController {
         return board;
     }
 
-    private boolean validateBoard() {
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                cells[row][column].getStyleClass().remove("sudoku-error");
+    private boolean validarTabuleiro() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                cells[i][j].getStyleClass().remove("sudoku-error");
             }
         }
 
-        int[][] board = readBoard();
-        boolean valid = true;
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                int value = board[row][column];
-                if (value == 0) {
-                    continue;
-                }
-                for (int otherColumn = column + 1; otherColumn < SIZE; otherColumn++) {
-                    if (board[row][otherColumn] == value) {
-                        markConflict(row, column, row, otherColumn);
-                        valid = false;
+        int[][] board = lerTabuleiro();
+        boolean ok = true;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                int value = board[i][j];
+                if (value == 0) { continue; }
+                for (int c = j + 1; c < SIZE; c++) { // 
+                    if (board[i][c] == value) {
+                        marcarConflito(i, j, i, c);
+                        ok = false;
                     }
                 }
-                for (int otherRow = row + 1; otherRow < SIZE; otherRow++) {
-                    if (board[otherRow][column] == value) {
-                        markConflict(row, column, otherRow, column);
-                        valid = false;
+                for (int k = i + 1; k < SIZE; k++) {
+                    if (board[k][j] == value) {
+                        marcarConflito(i, j, k, j);
+                        ok = false;
                     }
                 }
-                int startRow = row / 3 * 3;
-                int startColumn = column / 3 * 3;
-                for (int otherRow = startRow; otherRow < startRow + 3; otherRow++) {
-                    for (int otherColumn = startColumn; otherColumn < startColumn + 3; otherColumn++) {
-                        if ((otherRow > row || (otherRow == row && otherColumn > column))
-                                && board[otherRow][otherColumn] == value) {
-                            markConflict(row, column, otherRow, otherColumn);
-                            valid = false;
+                int startRow = i / 3 * 3;
+                int startColumn = j / 3 * 3;
+                for (int k = startRow; k < startRow + 3; k++) {
+                    for (int c = startColumn; c < startColumn + 3; c++) {
+                        if ((k > i || (k == i && c > j)) && board[k][c] == value) {
+                            marcarConflito(i, j, k, c);
+                            ok = false;
                         }
                     }
                 }
             }
         }
-        return valid;
+        return ok;
     }
 
-    private void markConflict(int rowA, int columnA, int rowB, int columnB) {
-        addStyleClass(cells[rowA][columnA], "sudoku-error");
-        addStyleClass(cells[rowB][columnB], "sudoku-error");
+    private void marcarConflito(int rowA, int columnA, int rowB, int columnB) {
+        adicionarStateClasses(cells[rowA][columnA], "sudoku-error");
+        adicionarStateClasses(cells[rowB][columnB], "sudoku-error");
     }
 
     private int[][] createRandomPuzzle() {
@@ -347,10 +338,10 @@ public class EscolherSudokuController {
         List<Integer> columns = shuffledIndexes(random);
 
         int[][] puzzle = new int[SIZE][SIZE];
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                int pattern = (rows.get(row) * 3 + rows.get(row) / 3 + columns.get(column)) % SIZE;
-                puzzle[row][column] = digits.get(pattern);
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                int pattern = (rows.get(i) * 3 + rows.get(i) / 3 + columns.get(j)) % SIZE;
+                puzzle[i][j] = digits.get(pattern);
             }
         }
 
@@ -387,11 +378,11 @@ public class EscolherSudokuController {
         return indexes;
     }
 
-    private int countFilledCells() {
+    private int contarCelulasPreenchidas() {
         int count = 0;
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
-                if (!cells[row][column].getText().isEmpty()) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (!cells[i][j].getText().isEmpty()) {
                     count++;
                 }
             }
@@ -399,9 +390,9 @@ public class EscolherSudokuController {
         return count;
     }
 
-    private void updateFilledCount() {
+    private void  atualizarContagemDePreenchidas() {
         if (lblPreenchidas != null) {
-            lblPreenchidas.setText(countFilledCells() + " / " + (SIZE * SIZE));
+            lblPreenchidas.setText(contarCelulasPreenchidas() + " / " + (SIZE * SIZE));
         }
     }
 
@@ -409,15 +400,15 @@ public class EscolherSudokuController {
         lblNome.setText(name);
         lblDificuldade.setText(difficulty);
         lblDescricao.setText(description);
-        updateFilledCount();
+         atualizarContagemDePreenchidas();
     }
 
-    private void removeStateClasses(TextField cell) {
+    private void removerStateClasses(TextField cell) {
         cell.getStyleClass().removeAll(
                 "sudoku-fixed", "sudoku-current", "sudoku-generated", "sudoku-error");
     }
 
-    private void addStyleClass(Node node, String styleClass) {
+    private void adicionarStateClasses(Node node, String styleClass) {
         if (!node.getStyleClass().contains(styleClass)) {
             node.getStyleClass().add(styleClass);
         }
@@ -427,12 +418,12 @@ public class EscolherSudokuController {
         return gridSudoku.getScene().getWindow();
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
+    private void showAlert(Alert.AlertType tipo, String titulo, String mensagem) {
+        Alert alert = new Alert(tipo);
         alert.initOwner(getWindow());
-        alert.setTitle(title);
+        alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(mensagem);
         alert.showAndWait();
     }
 }

@@ -62,13 +62,13 @@ public class ConfigurarAlgoritmoController {
         selecionarBuscaCega(null);
     }
 
-    public void setSudoku(int[][] sudoku) {
-        this.sudoku = copyBoard(sudoku);
-        renderBoard();
+    public void definirSudoku(int[][] sudoku) {
+        this.sudoku = copiarTabuleiro(sudoku);
+        renderizarTabuleiro();
         int filled = 0;
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                if (sudoku[row][column] != 0) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (sudoku[i][j] != 0) {
                     filled++;
                 }
             }
@@ -78,45 +78,45 @@ public class ConfigurarAlgoritmoController {
         lblPreenchidas.setText(filled + " / 81");
     }
 
-    public void setPreviousScene(Scene previousScene) {
+    public void definirCenaAnterior(Scene previousScene) {
         this.previousScene = previousScene;
     }
 
-    public void setPreviousWindowState(boolean maximized, boolean fullScreen) {
+    public void definirEstadoAnteriorDaJanela(boolean maximized, boolean fullScreen) {
         this.previousMaximized = maximized;
         this.previousFullScreen = fullScreen;
     }
 
     @FXML
     public void trocarSudoku(ActionEvent actionEvent) {
-        returnToSudoku(actionEvent);
+        retornarAoSudoku(actionEvent);
     }
 
     @FXML
     public void selecionarBuscaCega(ActionEvent actionEvent) {
         cbBuscaCega.setDisable(false);
         cbHeuristica.setDisable(true);
-        updateAlgorithmDescription(cbBuscaCega.getValue());
+        atualizarDescricaoAlgoritmo(cbBuscaCega.getValue());
     }
 
     @FXML
     public void selecionarBuscaHeuristica(ActionEvent actionEvent) {
         cbBuscaCega.setDisable(true);
         cbHeuristica.setDisable(false);
-        updateAlgorithmDescription(cbHeuristica.getValue());
+        atualizarDescricaoAlgoritmo(cbHeuristica.getValue());
     }
 
     @FXML
     public void alterarAlgoritmoCego(ActionEvent actionEvent) {
         if (rbBuscaCega.isSelected()) {
-            updateAlgorithmDescription(cbBuscaCega.getValue());
+            atualizarDescricaoAlgoritmo(cbBuscaCega.getValue());
         }
     }
 
     @FXML
     public void alterarHeuristica(ActionEvent actionEvent) {
         if (rbBuscaHeuristica.isSelected()) {
-            updateAlgorithmDescription(cbHeuristica.getValue());
+            atualizarDescricaoAlgoritmo(cbHeuristica.getValue());
         }
     }
 
@@ -128,24 +128,25 @@ public class ConfigurarAlgoritmoController {
 
     @FXML
     public void voltar(ActionEvent actionEvent) {
-        returnToSudoku(actionEvent);
+        retornarAoSudoku(actionEvent);
     }
 
     @FXML
     public void proximo(ActionEvent actionEvent) {
         if (sudoku == null) {
-            showError("Nenhum Sudoku foi selecionado.");
+            exibirErro("Nenhum Sudoku foi selecionado.");
             return;
         }
-        if (!lblAlgoritmo.getText().contains("DFS")) {
-            showError("A tela de resolução está disponível para DFS com Backtracking.");
+        String algoritmo = lblAlgoritmo.getText();
+        if (!(algoritmo.contains("DFS") || algoritmo.contains("MRV") || algoritmo.contains("Minimum Remaining Values"))) {
+            exibirErro("A tela de resolução está disponível para DFS com Backtracking ou MRV.");
             return;
         }
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ResolverSudoku.fxml"));
             Parent root = loader.load();
             ResolverSudokuController controller = loader.getController();
-            controller.setConfiguration(sudoku, lblAlgoritmo.getText(), sliderVelocidade.getValue());
+            controller.definirConfiguracao(sudoku, algoritmo, sliderVelocidade.getValue());
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             scene.getStylesheets().addAll(stage.getScene().getStylesheets());
@@ -153,11 +154,11 @@ public class ConfigurarAlgoritmoController {
             stage.setScene(scene);
             stage.setMaximized(true);
         } catch (IOException exception) {
-            showError("Não foi possível abrir a resolução: " + exception.getMessage());
+            exibirErro("Não foi possível abrir a resolução: " + exception.getMessage());
         }
     }
 
-    private void showError(String message) {
+    private void exibirErro(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
         alert.setHeaderText(null);
@@ -165,50 +166,43 @@ public class ConfigurarAlgoritmoController {
         alert.showAndWait();
     }
 
-    private void renderBoard() {
+    private void renderizarTabuleiro() {
         gridSudoku.getChildren().clear();
         if (sudoku == null) {
             return;
         }
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                Label cell = new Label(sudoku[row][column] == 0 ? "" : Integer.toString(sudoku[row][column]));
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                Label cell = new Label(sudoku[i][j] == 0 ? "" : Integer.toString(sudoku[i][j]));
                 cell.setAlignment(Pos.CENTER);
                 cell.setMinSize(30, 30);
                 cell.setPrefSize(30, 30);
                 cell.setMaxSize(30, 30);
                 cell.setStyle("-fx-border-color: #aaaaaa; -fx-background-color: white; -fx-font-weight: bold;");
-                gridSudoku.add(cell, column, row);
+                gridSudoku.add(cell, j, i);
             }
         }
     }
 
-    private void updateAlgorithmDescription(String algorithm) {
+    private void atualizarDescricaoAlgoritmo(String algorithm) {
         if (algorithm == null) {
             return;
         }
         lblAlgoritmo.setText(algorithm);
-        if (algorithm.contains("DFS")) {
-            lblDescricaoAlgoritmo.setText(
-                    "Explora os estados em profundidade e volta quando encontra um caminho inválido.");
-        } else if (algorithm.contains("Largura")) {
-            lblDescricaoAlgoritmo.setText(
-                    "Explora os estados nível por nível até encontrar uma solução.");
-        } else {
-            lblDescricaoAlgoritmo.setText(
-                    "Usa a heurística selecionada para priorizar os estados mais promissores.");
-        }
+        if (algorithm.contains("DFS")) { lblDescricaoAlgoritmo.setText( "Explora os estados em profundidade e volta quando encontra um caminho inválido.");
+        } else if (algorithm.contains("Largura")) { lblDescricaoAlgoritmo.setText( "Explora os estados nível por nível até encontrar uma solução.");
+        } else { lblDescricaoAlgoritmo.setText( "Usa a heurística selecionada para priorizar os estados mais promissores."); }
     }
 
-    private int[][] copyBoard(int[][] source) {
+    private int[][] copiarTabuleiro(int[][] source) {
         int[][] copy = new int[9][9];
-        for (int row = 0; row < 9; row++) {
-            System.arraycopy(source[row], 0, copy[row], 0, 9);
+        for (int i = 0; i < 9; i++) {
+            System.arraycopy(source[i], 0, copy[i], 0, 9);
         }
         return copy;
     }
 
-    private void openScreen(ActionEvent actionEvent, String resource) {
+    private void abrirTela(ActionEvent actionEvent, String resource) {
         try {
             Parent root = FXMLLoader.load(HelloApplication.class.getResource(resource));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -226,9 +220,9 @@ public class ConfigurarAlgoritmoController {
         }
     }
 
-    private void returnToSudoku(ActionEvent actionEvent) {
+    private void retornarAoSudoku(ActionEvent actionEvent) {
         if (previousScene == null) {
-            openScreen(actionEvent, "EscolherSudoku.fxml");
+            abrirTela(actionEvent, "EscolherSudoku.fxml");
             return;
         }
 
